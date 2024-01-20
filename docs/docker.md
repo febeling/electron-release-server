@@ -33,6 +33,11 @@ To run the single container provide the next environment variables:
   ```
 - `TOKEN_SECRET` – Recommended: 63 random alpha-numeric characters
 - `APP_URL` - base url for the app - [ref](http://sailsjs.org/documentation/reference/application/sails-get-base-url)
+- `APP_URL` will also set the value for `sockets.onlyAllowOrigins` (required in production)
+- `MODELS_MIGRATE_MODE` can be used to set the `models.migrate` mode, which defaults to `alter`. `safe` is
+  required for production
+- Setting `HTTP_TRUST_PROXY` enables `http.trustProxy`
+- Setting `SECURE_COOKIE` enables `session.cookie.secure`
 
 To use `production.js` set `NODE_ENV` to `"production"` – so you should not set the environment variables:
 `APP_USERNAME`, `APP_PASSWORD`, `DB_HOST`, `DB_PORT`,

@@ -1,18 +1,26 @@
 /**
  * Docker environment settings
+ *
+ * This file is the config/local.js file used by the Dockerfile.
  */
 
 module.exports = {
 
   models: {
     datastore: 'postgresql',
-    migrate: 'alter',
+    migrate: process.env['MODELS_MIGRATE_MODE'] || 'alter',
     dataEncryptionKeys: {
       // DEKs should be 32 bytes long, and cryptographically random.
       // You can generate such a key by running the following:
       //   require('crypto').randomBytes(32).toString('base64')
       default: process.env['DATA_ENCRYPTION_KEY'],
     }
+  },
+  http: {
+    trustProxy: process.env['HTTP_TRUST_PROXY'] ? true : false
+  },
+  sockets: {
+    onlyAllowOrigins: [process.env['APP_URL']]
   },
 
   port: 80,
@@ -54,7 +62,10 @@ module.exports = {
     host: process.env['DB_HOST'] || process.env['DATABASE_URL'] && process.env['DATABASE_URL'].split('@')[1].split(':')[0],
     user: process.env['DB_USERNAME'] || process.env['DATABASE_URL'] && process.env['DATABASE_URL'].split('@')[0].split(':')[1].split('/')[2],
     password: process.env['DB_PASSWORD'] || process.env['DATABASE_URL'] && process.env['DATABASE_URL'].split('@')[0].split(':')[2],
-    port: process.env['DB_PORT'] || process.env['DATABASE_URL'] && process.env['DATABASE_URL'].split('@')[1].split(':')[1].split('/')[0]
+    port: process.env['DB_PORT'] || process.env['DATABASE_URL'] && process.env['DATABASE_URL'].split('@')[1].split(':')[1].split('/')[0],
+    cookie: {
+      secure: process.env['SECURE_COOKIE'] ? true : false
+    }
   }
 
 };
